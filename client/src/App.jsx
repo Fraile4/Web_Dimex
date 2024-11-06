@@ -4,6 +4,10 @@ import { AuthProvider } from "./context/AuthContext"
 import RegisterPage from "./pages/RegisterPage"
 import LoginPage from "./pages/LoginPage"
 import TasksPage from "./pages/TasksPage"
+import PaPPage from "./pages/PaPPage"
+import CCPage from "./pages/CCPage"
+
+import ProtectedRoute from "./ProtectedRoute"
 
 function App() {
   return (
@@ -13,7 +17,13 @@ function App() {
           <Route path="/" element={<h1>Dimex</h1>} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/tasks" element={<TasksPage />} />
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/tasks" element={<TasksPage />} />
+            <Route path="/Pap" element={<PaPPage />} />
+            <Route path="/CC" element={<CCPage />} />
+          </Route>
+        
         </Routes>
       </BrowserRouter>
     </AuthProvider>

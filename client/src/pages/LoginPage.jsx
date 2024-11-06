@@ -6,15 +6,17 @@ import { useNavigate } from 'react-router-dom'
 function LoginPage() {
 
   const { register, handleSubmit, formState: { errors }, } = useForm()
-  const { signin, isAuthenticated, isAdmin, errors: signinErrors } = useAuth()
+  const { signin, isAuthenticated, isAdmin, errors: loginErrors } = useAuth()
   const navigate = useNavigate()
+
   useEffect(() => {
     if (isAdmin) {
       navigate('/register')
-    } else if (isAuthenticated) {
+    } else
+    if (isAuthenticated) {
       navigate('/tasks')
     }
-  }, [isAdmin, isAuthenticated])
+  })
 
   const onSubmit = handleSubmit(async (data) => {
     signin(data)
@@ -24,7 +26,7 @@ function LoginPage() {
     <div className="flex h-[calc(100vh - 100px)] items-center justify-center">
       <div className="bg-zinc-800 max-w-md p-10 rounded-md">
 
-        {signinErrors.map((error, i) => (
+        {loginErrors.map((error, i) => (
           <div className="bg-red-500 text-white p-2 my-2 rounded-md" key={i}>
             {error}
           </div>
