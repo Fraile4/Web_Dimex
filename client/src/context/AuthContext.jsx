@@ -23,6 +23,7 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [PaP, setPaP] = useState(false);
     const [CC, setCC] = useState(false);
+    const [csvData, setCsvData] = useState([])
 
     // clear errors after 5 seconds
     useEffect(() => {
@@ -104,6 +105,21 @@ export const AuthProvider = ({ children }) => {
         checkLogin()
     }, []);
 
+    useEffect(() => {
+        const fetchCsvData = async () => {
+            if (PaP){
+                try {
+                    const response = await axios.get('./df/base_Reto.csv')
+                    setCsvData(response.data)
+                } catch (error) {
+                    console.error('Error fetching CSV data:', error)
+                }
+            } 
+        }
+
+        fetchCsvData()
+    }, [])
+
     return (
         <AuthContext.Provider value={{
             signup,
@@ -115,7 +131,8 @@ export const AuthProvider = ({ children }) => {
             errors,
             loading,
             PaP,
-            CC
+            CC,
+            csvData
         }}>
             {children}
         </AuthContext.Provider>
