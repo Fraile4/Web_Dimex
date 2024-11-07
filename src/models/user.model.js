@@ -18,7 +18,8 @@ const userSchema = new mongoose.Schema({
     },
     puesto: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     }
 }, {
     timestamps: true

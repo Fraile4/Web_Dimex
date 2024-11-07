@@ -6,17 +6,28 @@ import { useNavigate } from 'react-router-dom'
 function LoginPage() {
 
   const { register, handleSubmit, formState: { errors }, } = useForm()
-  const { signin, isAuthenticated, isAdmin, errors: loginErrors } = useAuth()
+  const { user, signin, isAuthenticated, isAdmin, PaP, CC, errors: loginErrors } = useAuth()
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (isAdmin) {
+    if (isAuthenticated && isAdmin) {
       navigate('/register')
-    } else
-    if (isAuthenticated) {
-      navigate('/tasks')
+    } 
+  })
+
+  useEffect(() => {
+    if (isAuthenticated && !isAdmin && PaP) {
+      navigate('/PaP')
     }
   })
+
+  useEffect(() => {
+    if (isAuthenticated && CC) {
+      navigate('/CC')
+    }
+  })
+
+  //console.log(isAdmin, PaP, CC)
 
   const onSubmit = handleSubmit(async (data) => {
     signin(data)
@@ -33,7 +44,7 @@ function LoginPage() {
         ))
         }
 
-        <h1 className="text-2xl font-bold text-white mb-4">Login</h1>
+        <h1 className="text-2xl font-bold text-white mb-4">Dimex</h1>
 
         <form onSubmit={onSubmit}>
           <input
@@ -56,7 +67,7 @@ function LoginPage() {
             )
           }
 
-          <button type="submit" className="w-full bg-blue-500 text-white px-4 py-2 rounded-md my-2">Register</button>
+          <button type="submit" className="w-full bg-blue-500 text-white px-4 py-2 rounded-md my-2">Login</button>
         </form>
       </div>
     </div>

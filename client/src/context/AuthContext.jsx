@@ -2,6 +2,7 @@ import { createContext, useState, useContext } from "react";
 import { registerRequest, loginRequest, verifyTokenRequest } from '../api/auth'
 import Cookies from 'js-cookie'
 import { useEffect } from "react";
+import { set } from "mongoose";
 
 export const AuthContext = createContext();
 
@@ -20,6 +21,8 @@ export const AuthProvider = ({ children }) => {
     const [isAdmin, setIsAdmin] = useState(false);
     const [errors, setErrors] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [PaP, setPaP] = useState(false);
+    const [CC, setCC] = useState(false);
 
     // clear errors after 5 seconds
     useEffect(() => {
@@ -45,11 +48,15 @@ export const AuthProvider = ({ children }) => {
     const signin = async (user) => {
         try {
             const res = await loginRequest(user)
-            console.log(res)
+            //console.log(res)
             setIsAuthenticated(true)
             setUser(res.data)
             //console.log(user.email)
-            if (user.email === 'admin@admin.com') setIsAdmin(true)
+            //console.log(res.data.puesto)
+            if (user.email === 'admin@admin.com') setIsAdmin(true);
+            if (res.data.puesto === 'PaP') setPaP(true);
+            if (res.data.puesto === 'CC') setCC(true);
+
             setIsAuthenticated(true)
         } catch (error) {
             if (Array.isArray(error.response.data.message)) {
@@ -64,6 +71,8 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
         setIsAuthenticated(false);
         setIsAdmin(false);
+        setPaP(false);
+        setCC(false);
     };
 
       useEffect(() => {
@@ -104,7 +113,9 @@ export const AuthProvider = ({ children }) => {
             isAuthenticated,
             isAdmin,
             errors,
-            loading
+            loading,
+            PaP,
+            CC
         }}>
             {children}
         </AuthContext.Provider>
